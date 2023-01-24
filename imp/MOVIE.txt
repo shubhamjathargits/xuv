@@ -1,0 +1,172 @@
+MOVIES:
+
+CREATE (:Movie {title:'Pushpa',released:'2022'})
+CREATE (:Movie {title:'Pandu',released:'2022'})
+CREATE (:Movie {title:'Baagi',released:'2017'})
+CREATE (:Movie {title:'Shiddat',released:'2021'})
+
+ACTORS:
+
+CREATE (:Actor {Name:'Allu Arjun',age:'31'})
+CREATE (:Actor {Name:'Bhau Kadam',age:'35'})
+CREATE (:Actor {Name:'Tiger Shroff',age:'30'})
+
+ROLES:
+
+CREATE (:Role{Name:'Lead_role'})
+CREATE (:Role{Name:'Supporting_role'})
+
+DIRECTOR:
+
+CREATE (:Director{Name:'Bhushan Kumar'})
+CREATE (:Director{Name:'Rohit Shetti'})
+CREATE (:Director{Name:'Farah Khan'})
+CREATE (:Director{Name:'Karan'})
+
+
+PRODUCER:
+
+CREATE (:Producer{Name:'Vinod Chopra'})
+CREATE (:Producer{Name:'Siddharth Roy'})
+CREATE (:Producer{Name:'Harshal Thombare'})
+
+FINANCIER:
+
+CREATE (:Financier{Name:'Ganesh'})
+CREATE (:Financier{Name:'Nilesh'})
+CREATE (:Financier{Name:'Shrikant'})
+
+REVIWER:
+
+CREATE (:Reviewer{Name:'Sonu'})
+CREATE (:Reviewer{Name:'Chinu'})
+CREATE (:Reviewer{Name:'Ganu'})
+
+RELATIONSHIP:
+
+1)PERFORMS AND ACTED_IN:
+
+
+Match(a:Actor),(m:Movie),(r:Role)
+where a.Name ='Bhau Kadam' and m.title='Pandu' and r.Name='Lead_role'
+CREATE (r)<-[:PERFORMS]-(a)-[:ACTED_IN]->(m)
+return m,a,r
+
+Match(a:Actor),(m:Movie),(r:Role)
+Where a.Name='Allu Arjun' and m.title='Pushpa' and r.Name='Lead_role'
+CREATE (r)<-[:PERFORMS]-(a)-[:ACTED_IN]->(m)
+return m,a,r
+
+Match(a:Actor),(m:Movie),(r:Role)
+Where a.Name='Tiger Shroff' and m.title='Baagi' and r.Name='Supporting_role'
+CREATE (r)<-[:PERFORMS]-(a)-[:ACTED_IN]->(m)
+return m,a,r
+
+
+2)DIRECTED_BY:
+
+
+Match(m:Movie),(d:Director)
+where m.title='Pandu' and d.Name='Karan'
+CREATE (m)-[:DIRECTED_BY]->(d)
+return m,d
+
+Match(m:Movie),(d:Director)
+where m.title='Baagi' and d.Name='Rohit Shetti'
+CREATE (m)-[:DIRECTED_BY]->(d)
+return m,d
+
+Match(m:Movie),(d:Director)
+Where m.title='Pushpa' and d.Name='Farah Khan'
+CREATE (m)-[:DIRECTED_BY]->(d)
+return m,d
+
+
+3)PRODUCED_BY and FINANCES_BY
+
+Match(m:Movie),(p:Producer),(f:Financier)
+where m.title='Pushpa' and p.Name='Vinod Chopra' and f.Name='Shrikant'
+CREATE (m)-[:PRODUCED_BY]->(p),(m)-[:FINANCES_BY]->(f)
+return m,p,f
+
+Match(m:Movie),(p:Producer),(f:Financier)
+Where m.title='Pandu' and p.Name='Harshal Thombare' and f.Name='Ganesh'
+CREATE (m)-[:PRODUCED_BY]->(p),(m)-[:FINANCES_BY]->(f)
+Return m,p,f
+
+4)REVIEWS:
+
+Match(m:Movie),(re:Reviewer)
+where m.title='Pushpa' and re.Name='Sonu'
+CREATE (re)-[:REVIEWS]->(m)
+return re,m
+
+Match(m:Movie),(re:Reviewer)
+Where m.title='Pandu' and re.Name='Chinu'
+CREATE (re)-[:REVIEWER]->(m)
+return re,m
+
+5)Follows:
+
+Match(r:Reviewer),(r1:Reviewer),(r2:Reviewer)
+Where r.Name='Sonu' and r1.Name='Chinu' and r2.Name='Ganu'
+CREATE (r)-[:Follows]->(r1)-[:Follows]->(r2)
+return r,r1,r2
+
+QUERIES:
+
+
+A) Find all actors who have acted in a movie “…….”
+
+Match(a:Actor),(m:Movie)
+where m.title='Pushpa' and (a)-[:ACTED_IN]->(m)
+return a.Name
+
+B)Find all reviewer pairs, one following the other and both reviewing the same
+movie, and return entire subgraphs.
+
+Match(m:Movie),(re:Reviewer)
+where (re)-[:REVIEWS]->(m)
+return m.title,re.Name as Person
+
+C) Find all actors that acted in a movie together after 2023 and return the actor
+names and movie node
+
+Match(a:Actor),(m:Movie)
+where m.released>'2019'and (a)-[:ACTED_IN]->(m)
+return a.Name,m.title
+
+D) Find all movies produced by “ …….”
+
+Match(m:Movie),(p:Producer)
+where p.Name='Harshal Thombare' and (m)-[:PRODUCED_BY]->(p)
+return m.title
+
+//a) List the names of actors that paired in multiple movies together.
+
+MATCH (p1:Actor)-[:Acted_in]->(m1:Movie) with collect(p1.Name) as Name 1,m1 Match (p2:Actor)-[:Acted_in]->(m2:Movie) with name1,m1,m2,p2
+where m1<>m2 and (p2.Name in name1)
+with collect(Distinct p2.name) as name,m1,m2 where size(names)>=2
+return names,m1.name,m2.name
+
+ 
+B)List all pairs of actor–movie subgraphs along with the roles played.
+
+Match p=(m:Movie)<-[:ACTED_IN]-(a:Actor)-[:PERFORMS]->(r:Role) 
+return p
+
+
+
+C)List all reviewers and the ones they are following directly or via another a third Reviewer 
+
+Match (r1:Reviewer)-[:Follows]->(r2:Reviewer)-[:Follows]->(r3:Reviewer) where r1<>r3
+return r1.Name,r2.Name,r3.Name
+
+D)List the names of movies that have the most number of reviews. 
+
+Match (m:Movie)<-[:REVIEWER]-(r:Reviewer) with count(r) as Rcnt,m with max(Rcnt) as max
+Match (m:Movie)<-[:REVIEWER]-(r:Reviewer) with count(r) as Rcnt,m,max where Rcnt=max
+return m.title
+
+
+
