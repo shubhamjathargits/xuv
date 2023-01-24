@@ -1,0 +1,204 @@
+EMPLOYEE
+
+
+CREATE (:Employee{Name:'Harshal',Qualification:['Msc','BSC']})
+CREATE (:Employee{Name:'Ganesh',Qualification:['Mcom','Bcom']})
+CREATE (:Employee{Name:'Niraj',Qualification:['BCS','Mcs']})
+CREATE (:Employee{Name:'Chetan',Qualification:['BPharm','DPharm']})
+CREATE (:Employee{Name:'Nilesh',Qualification:['MBA','BSC']})
+CREATE (:Employee{Name:'Vivek',Qualification:['BE','Bcom']})
+CREATE (:Employee{Name:'Shiva',Qualification:['BCS','PHD']})
+CREATE (:Employee{Name:'Datta',Qualification:['BPharm','Agree']})
+
+DEPARTMENT:
+
+
+CREATE(:Department{Name:'IT'})
+CREATE(:Department{Name:'BPO'})
+CREATE(:Department{Name:'HR'})
+CREATE(:Department{Name:'CBO'})
+
+SKILLSETS:
+
+CREATE(:Skillset{Skills:['Fluent Communication']})
+CREATE (:Skillset{Skills:['Java Develpor']})
+CREATE (:Skillset{Skills:['Angular Develpoer']})
+CREATE (:Skillset{Skills:['Fluent Communication','Java Develpor']})
+CREATE(:Skillset{Skills:['Programming']})
+CREATE (:Skillset{Skills:['PHP Develpor']})
+
+PROJECTS:
+
+CREATE(:Projects{Name:'Out Bound Process', TimeSpan:'90day', Client:'Ruby Max'})
+CREATE(:Projects{Name:'Food Deliver App',TimeSpan:'45day',Client:'Hydrabad Biryani'})
+CREATE (:Projects{Name:'Uber App',TimeSpan:'60day',Client:'Car Driver'})
+CREATE (:Projects{Name:'Tata Sky',TimeSpan:'25day',Client:'Sky Voice'})
+
+RELATIONSHP:
+
+1)WORKS_IN:
+
+Match(e:Employee),(d:Department)
+Where e.Name='Harshal'and d.Name='IT'
+CREATE (e)-[:Works_in]->(d)
+return e,d
+
+Match(e:Employee),(d:Department)
+Where e.Name='Niraj' and d.Name='BPO'
+CREATE (e)-[:Works_in]->(d)
+return e,d
+
+Match(e:Employee),(d:Department)
+Where e.Name='Chetan' and d.Name='HR'
+CREATE (e)-[:Works_in]->(d)
+return e,d
+
+Match(e:Employee),(d:Department)
+Where e.Name='Vivek' and d.Name='CBO'
+CREATE (e)-[:Works_in]->(d)
+return e,d
+
+Match(e:Employee),(d:Department)
+Where e.Name='Shiva' and d.Name='HR'
+CREATE (e)-[:Works_in]->(d)
+return e,d
+
+Match(e:Employee),(d:Department)
+Where e.Name='Datta' and d.Name='IT'
+CREATE (e)-[:Works_in]->(d)
+return e,d
+
+2)HAS_ACQUIRED:
+
+Match(e:Employee),(s:Skillset)
+Where e.Name='Niraj' and s.Skills=['Angular Develpoer']
+CREATE (e)-[:Has_acquired]->(s)
+return e,s
+
+Match(e:Employee),(s:Skillset)
+Where e.Name='Harshal' and s.Skills=['Fluent Communication','Java Develpor']
+CREATE (e)-[:Has_acquired]->(s)
+return e,s
+
+Match(e:Employee),(s:Skillset)
+Where e.Name='Datta' and s.Skills=['PHP Develpor']
+CREATE (e)-[:Has_acquired]->(s)
+return e,s
+
+Match(e:Employee),(s:Skillset)
+Where e.Name='Vivek' and s.Skills=['PHP Develpor']
+CREATE (e)-[:Has_acquired]->(s)
+return e,s
+
+
+
+3)ASSIGNED_TO:
+
+Match(e:Employee),(p:Projects)
+Where e.Name='Harshal' and p.Name='Food Deliver App'
+CREATE (e)-[:Assigned_to]->(p)
+return e,p
+
+Match(e:Employee),(p:Projects)
+Where e.Name='Chetan' and p.Name='Uber App'
+CREATE (e)-[:Assigned_to]->(p)
+return e,p
+
+Match(e:Employee),(p:Projects)
+Where e.Name='Datta' and p.Name='Uber App'
+CREATE (e)-[:Assigned_to]->(p)
+return e,p
+
+Match(e:Employee),(p:Projects)
+Where e.Name='Vivek' and p.Name='Food Deliver App'
+CREATE (e)-[:Assigned_to]->(p)
+return e,p
+
+4)CONTROLLED_BY:
+
+Match (p:Projects),(d:Department)
+Where p.Name='Uber App' and d.Name='IT'
+CREATE (p)-[:Controlled_By]->(d)
+return p,d
+
+Match (p:Projects),(d:Department)
+Where p.Name='Tata Sky' and d.Name='BPO'
+CREATE (p)-[:Controlled_By]->(d)
+return p,d
+
+Match (p:Projects),(d:Department)
+Where p.Name='Food Deliver App' and d.Name='CBO'
+CREATE (p)-[:Controlled_By]->(d)
+return p,d
+
+Match (p:Projects),(d:Department)
+Where p.Name='Out Bound Process' and d.Name='HR'
+CREATE (p)-[:Controlled_By]->(d)
+return p,d
+
+
+5)PROJECT MANAGER:
+
+Match (e:Employee),(p:Projects)
+Where e.Name='Harshal' and p.Name='Food Deliver App'
+CREATE (e)-[:Project_Manager]->(p)
+return e,p
+
+Match (e:Employee),(p:Projects)
+Where e.Name='Datta' and p.Name='Uber App'
+CREATE (e)-[:Project_Manager]->(p)
+return e,p
+
+Match (e:Employee),(p:Projects)
+Where e.Name='Vivek' and p.Name='Tata Sky'
+CREATE (e)-[:Project_Manager]->(p)
+return e,p
+
+Match (e:Employee),(p:Projects)
+Where e.Name='Chetan' and p.Name='Out Bound Process'
+CREATE (e)-[:Project_Manager]->(p)
+return e,p
+
+Match (e:Employee),(p:Projects)
+Where e.Name='Vivek' and p.Name='Out Bound Process'
+CREATE (e)-[:Project_Manager]->(p)
+return e,p
+
+QUERIES:
+
+A)List the names of employees in department “IT”
+Match (e:Employee),(d:Department)
+Where d.Name='IT' and (e)-[:Works_in]->(d)
+return e.Name
+
+B)List the projects along with their properties, controlled by department “IT”
+Match(p:Projects),(d:Department)
+where d.Name='IT' and (p)-[:Controlled_By]->(d)
+return p
+
+C) List the departments along with the count of employees in it
+Match (d:Department),(e:Employee)
+where (e)-[:Works_in]->(d)
+return d.Name,count(e.Name) as No_of_employee
+
+D) List the skillset for an employee “... ----”
+
+Match (e:Employee),(s:Skillset)
+where e.Name='Harshal' and (e)-[:Has_acquired]->(s)
+return e,s
+
+A) List the names of employees having the same skills as employee “………..”
+
+Match (e:Employee{Name:"Harshal"})-[:Has_acquired]->(s:Skillset)<-[:Has_acquired]-(e2:Employee) return e2.Name
+
+
+B) List the projects controlled by a department “……….” and have employees of the same department working in it.
+
+Match (p:Projects),(d:Department),(e:Employee)
+Where d.Name='IT' and (p)-[:Controlled_By]->(d) and (e)-[:Assigned_to]->(p) and (e)-[:Works_in]->(d)
+return e.Name,p.Name
+
+C)List the names of the projects belonging to departments managed by employee “…….”
+
+Match (p:Projects)-[:Controlled_By]->(d:Department) ,(e:Employee)-[:Project_Manager]->(p:Projects)
+ where e.Name='Vivek' return p.Name

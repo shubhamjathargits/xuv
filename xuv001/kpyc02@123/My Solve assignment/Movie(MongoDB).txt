@@ -1,0 +1,504 @@
+Assignment:1
+
+MOVIE:
+
+1. Create a database with the name ‘Movie’.
+> use Movie
+
+Queries:
+
+. Insert at least 10 documents in the collection Film –
+
+> db.createCollection('Film')
+
+a. Insert at least one document with film belonging to two genres.
+
+1)
+
+db.Film.insert ({"filmID":"111","Title":"Pandu","relYear":2021,"Genre":["Action","Sci-fi"],
+"Actors":[{"first_nm":"Bhau","last_nm":"Kadam"}],
+"Director":[{"first_nm":"Mahesh","last_nm":"Manjarekar"}],
+"relDetails":[{"place":"India","date":"02-12-2021","ratings":3}]})
+
+
+2)
+
+db.Film.insert({"filmID":"121","Title":"Sahoo","relYear":2018,"Genre":["adventure","romantic"],
+"Actors":[{"first_nm":"Prabhas","last_nm":"Bhai"},{"first_nm":"Shradhha","last_nm":"Kapoor"}],
+"Director":[{"first_nm":"Sunil","last_nm":"Shetty"}],
+"relDetails":[{"place":"India","date":"02-11-2018","ratings":4}]})
+
+
+b. Insert at least one document with film that is released at more than one place
+and on two different dates.
+1)
+
+db.Film.insert(
+{
+"filmID":"1234",
+"Title":"Singham",
+"relYear":"2016",
+"Genre":["Action","Romantic"],
+"Actors":[{"first_nm":"Akshay","last_nm":"Kumar"},
+          {"first_nm":"Kirthy","last_nm":"Suresh"}],
+"Director":[{"first_nm":"Bhushan","last_nm":"Kumar"},
+            {"first_nm":"Sagar","last_nm":"Sharma"}],
+"relDetails":[{
+"place":["Sangamner","Loni","Nasik"],
+"date":"27-10-2016",
+"ratings":"4"}]})
+
+2)
+
+db.Film.insert(
+{
+"filmID":"1234",
+"Title":"De Dhakka",
+"relYear":"2016",
+"Genre":["Action","Romantic"],
+"Actors":[{"first_nm":"Akshay","last_nm":"Kumar"},
+          {"first_nm":"Kirthy","last_nm":"Suresh"}],
+"Director":[{"first_nm":"Bhushan","last_nm":"Kumar"},
+            {"first_nm":"Sagar","last_nm":"Sharma"}],
+"relDetails":[{
+"place":["Sangamner","Loni","Nasik"],
+"date":["27-10-2016","25-10-2016"],
+"ratings":"4"}]})
+
+c. Insert at least three documents with the films released in the same year.
+1)
+
+db.Film.insert(
+{
+"filmId":"143",
+"Title":"Baggi",
+"relYear":"2015",
+"Genre":["Action","Romantic"],
+"Actors":[{"first_nm":"Tiger","last_nm":"Shroff"},
+	  {"first_nm":"Sonakshi","last_nm":"Sinha"}],
+"Director":[{"first_nm":"Sagar","last_nm":"Nadidwala"}],
+"relDetails":[{
+"place":["Pimparne","Jakhori","Sangamner"],
+"date":"22-04-2015",
+"ratings":"6"}]})
+
+2)
+
+db.Film.insert(
+{
+"filmId":"144",
+"Title":"Baggi2",
+"relYear":"2015",
+"Genre":["Action","Romantic"],
+"Actors":[{"first_nm":"Tiger","last_nm":"Shroff"},
+	  {"first_nm":"Sonakshi","last_nm":"Sinha"}],
+"Director":[{"first_nm":"Sagar","last_nm":"Nadidwala"}],
+"relDetails":[{
+"place":["Pimparne","Jakhori","Sangamner"],
+"date":"22-04-2015",
+"ratings":"8"}]})
+
+3)
+
+db.Film.insert(
+{
+"filmId":"145",
+"Title":"Baggi3",
+"relYear":"2015",
+"Genre":["Action","Romantic"],
+"Actors":[{"first_nm":"Tiger","last_nm":"Shroff"},
+	  {"first_nm":"Sonakshi","last_nm":"Sinha"}],
+"Director":[{"first_nm":"Sagar","last_nm":"Nadidwala"}],
+"relDetails":[{
+"place":["Pimparne","Jakhori","Sangamner"],
+"date":"22-04-2015",
+"ratings":"10"}]})
+
+
+d. Insert at least two documents with the films directed by one director.
+
+1)
+
+db.Film.insert(
+{
+"filmID":"123",
+"Title":"Marri",
+"relYear":"2020",
+"Genre":["Action","Romantic"],
+"Actors":[{"first_nm":"Dhanush","last_nm":"Shet"},
+          {"first_nm":"Kajal","last_nm":"Agarwal"}],
+"Director":[{"first_nm":"Farah","last_nm":"Khan"}],
+"relDetails":[{
+"place":"India",
+"date":"17-11-2020",
+"ratings":"5"}]})
+
+2)
+
+db.Film.insert(
+{
+"filmID":"132",
+"Title":"Zindgi na milegi dobara",
+"relYear":"2010",
+"Genre":["Romantic"],
+"Actors":[{"first_nm":"Salman","last_nm":"Khan"},
+          {"first_nm":"Priti","last_nm":"zinta"}],
+"Director":[{"first_nm":"Anup","last_nm":"Yadav"}],
+"relDetails":[{
+"place":"India",
+"date":"11-1-2010",
+"ratings":"9"}]})
+
+e. Insert at least two documents with films those are acted by a pair ‘Madhuri
+Dixit’ and ‘Shahrukh Khan’.
+
+1)
+db.Film.insert({
+"filmID":"1122",
+"Title":"Maine Pyaar Kiya",
+"relYear":"2011",
+"Genre":["Romantic"],
+"Actors":[{"first_nm":"Shahruk","last_nm":"Khan"},
+	  {"first_nm":"Madhuri","last_nm":"dixit"}],
+"Director":[{"first_nm":"Kishor","last_nm":"Kumar"}],
+"relDetails":[{
+"place":"INDIA",
+"date":"22-01-2011",
+"ratings":"8"}]})
+
+2)
+
+db.Film.insert({
+"filmID":"1123",
+"Title":"Koyla",
+"relYear":"2013",
+"Genre":["Romantic"],
+"Actors":[{"first_nm":"Shahruk","last_nm":"Khan"},
+	  {"first_nm":"Madhuri","last_nm":"dixit"}],
+"Director":[{"first_nm":"Kishor","last_nm":"Kumar"}],
+"relDetails":[{
+"place":["Sangamner","Pune"],
+"date":"24-06-2013",
+"ratings":"5"}]})
+
+2. Insert at least 10 documents in the collection Actor.
+
+> db.createCollection('Actor')
+
+1)
+
+db.Actor.insert({
+"ActorID":"1001",
+"First_nm":"Varun",
+"last_nm":"Dhawan",
+"Address":[{
+	"street":"SpineCity",
+	"city":"Hydrabaad",
+	"Country":"India",
+	"Pin":454657 }],
+"contact":[{
+"email":"varun@gmail.com",
+"phone":9623661221 }],
+"age":"26" })
+
+2)
+
+db.Actor.insert({
+"ActorID":"1002",
+"First_nm":"Siddhart",
+"last_nm":"Malhotra",
+"Address":[{
+	"Street":"Golden City",
+	"city":"Sangamner",
+	"country":"India",
+	"pin":422605 }],
+"contact":[{
+	"email":"sid@gmail.com",
+	"phone":9623547487 }],
+"age":22})
+
+
+3) 
+
+db.Actor.insert({
+"ActorID":"1003",
+"First_nm":"Mithun",
+"last_nm":"Chakravarthi",
+"Adress":[{
+	"Street":"Indira Nagar",
+	"city":"Sangamner",
+	"country":"India",
+	"pin":422606 }],
+"contact":[{
+	"email":"mit@gmail.com",
+	"phone":9623554595 }],
+"age":34})
+
+4)
+
+db.Actor.insert({
+"ActorID":"1004",
+"First_nm":"Siddhart",
+"last_nm":"Roy",
+"Adress":[{
+	"Street":"Ganesh Nagar",
+	"city":"Nasik",
+	"country":"India",
+	"pin":422607 }],
+"contact":[{
+	"email":"sidha@gmail.com",
+	"phone":9623555569 }],
+"age":34})
+
+5)
+
+db.Actor.insert({
+"ActorID":"1005",
+"First_nm":"salman",
+"last_nm":"Khan",
+"Adress":[{
+	"Street":"Savitri Nagar",
+	"city":"Mumbai",
+	"country":"India",
+	"pin":422609}],
+"contact":[{
+	"email":"khan@gmail.com",
+	"phone":9623454585 }],
+"age":37})
+
+6)
+
+db.Actor.insert({
+"ActorID":"1011",
+"First_nm":"Kapil",
+"last_nm":"Sharma",
+"Adress":[{
+	"Street":"Janta Nagar",
+	"city":"Sangamner",
+	"country":"India",
+	"pin":422605 }],
+"contact":[{
+	"email":"kapil@gmail.com",
+	"phone":9623664554 }],
+"age":38})
+
+7)
+
+db.Actor.insert({
+"ActorID":"1012",
+"First_nm":"Harshal",
+"last_nm":"Thombare",
+"Adress":[{
+	"Street":"Pimparne ",
+	"city":"Sangamner",
+	"country":"India",
+	"pin":422605 }],
+"contact":[{
+	"email":"harshu@gmail.com",
+	"phone":9881213281 }],
+"age":21})
+
+8)
+
+db.Actor.insert({
+"ActorID":"1013",
+"First_nm":"Asitkumar",
+"last_nm":"Modi",
+"Adress":[{
+	"Street":"Nehru Nagar",
+	"city":"Pune",
+	"country":"India",
+	"pin":422505 }],
+"contact":[{
+	"email":"modi@gmail.com",
+	"phone":9011981398 }],
+"age":24})
+
+9)
+
+db.Actor.insert({
+"ActorID":"1014",
+"First_nm":"Tarak",
+"last_nm":"Mehta",
+"Adress":[{
+	"Street":"Gokuldham Society",
+	"city":"Mumbai",
+	"country":"India",
+	"pin":422607 }],
+"contact":[{
+	"email":"tarak@gmail.com",
+	"phone":7385104282 }],
+"age":29})
+
+
+3. Display all the documents inserted in both the collections.
+
+	db.Film.find().pretty()
+	db.Actor.find().pretty()
+
+
+4. Add a value to the rating of the film whose title starts with ‘T’.
+
+db.Film.find({"Title":/^K/})
+	
+	db.Film.updateOne( {"Title":/^K/}, {$set:{"relDetails":{"ratings":"3"}}})
+	
+			OR
+			
+	db.Film.findAndModify({query: {"Title":/^K/},update:{$set:{"relDetails":{"ratings":10}}} } )
+
+5. Add an actor named "_____" in the ‘Actor’ collection. 
+Also add the details of the film in ‘Film’ collection in which this actor has acted in.
+
+db.Actor.insert({
+"ActorID":"1074",
+"First_nm":"Ajinkya",
+"last_nm":"Shinde",
+"Address":[{
+	"street":"Krushna City",
+	"city":"Mumbai",
+	"Country":"India",
+	"Pin":422607,}],
+"contact":[{
+	"email":"as@gmail.com",
+	"phone":9540214565}],
+"age":"38"})
+
+
+db.Film.insert(
+{
+"filmID":"1666",
+"Title":"Holiday",
+"relYear":2019,
+"Genre":["Action","Romantic"],
+"Actors":[{"first_nm":"Ajinkya","last_nm":"Shinde"}],
+"Director":[{"first_nm":"Karan","last_nm":"J"}],
+relDetails:[{
+"place":"India",
+"date":"02-10-2017",
+"ratings":6 }]})
+
+
+6.Delete the film "_______".	
+	
+ db.Film.remove({"Title":"Maine Pyaar Kiya"})
+
+
+7. Delete an actor named "___________".
+
+	db.Actor.remove({"First_nm":"Ajinkya"})
+
+
+8.Delete all actors from an ‘Actor’ collection who have age greater than “_______”
+
+  db.Actor.remove({"age":{$gte:"26"}})
+
+
+
+9. Update the actor’s address where Actor Id is “_______”.
+
+db.Actor.update({
+"ActorID":"1005"}, 
+{$set :{
+"Address":[{
+"street":"Ganga", 
+"city":"Delhi", 
+"Country":"India",
+ "Pin":411044}]
+}
+})
+
+10.Update the genre of the film directed by “______”.
+
+db.Film.update( {"Director":{"first_nm":"Karan","last_nm":"J"}},{$set:{"Genre":["Action","Romantic","sci-fi"]}})
+
+Assignment:3
+
+
+1. Find the titles of all the films starting with the letter ‘R’ released during the year
+2009 and 2011.
+
+db.Film.find({$and:[{"relYear": {$gte: "2009",$lte: "2021"}},{"Title": /^D/}]},{ _id: 0,Title: 1})
+	
+
+2. Find the list of films acted by an actor "_______".
+
+ db.Film.find({$and:[{"Actors":{"first_nm":"Akshay","last_nm":"Kumar"}}]},{ _id: 0,Title: 1})
+		
+
+3. Find all the films released in 2010s.
+
+db.Film.find({"relYear" : {$gt : "2010" , $lt :"2020"}}).pretty()
+		OR
+db.Film.find({"relYear" : {$gt :"2010"}}).pretty()
+	
+
+4. Find all films belonging to “Adventure” and “Thriller” genre.
+	
+	db.Film.find({"Genre":["Action","Romantic"]})
+               OR
+	db.Film.find({$and: [{"Genre": "Action"}, {"Genre": "Romantic"}]})
+
+5. Find all the films having __ rating.
+	
+	 db.Film.find({"relDetails.ratings":"8"},{_id:0,Title:1})
+
+6. Arrange the film names in ascending order and release year should be in descending
+order.
+
+	db.Film.find({},{ _id: 0,Title: 1,relYear:1}).sort({Title:1,relYear:-1})
+		OR
+	db.Film.aggregate([{ $sort : { Title : -1, relYear: 1 } }])
+
+	db.Film.find().sort({"Title":1,"relYear":-1}).limit(4).pretty()
+
+7. Sort the actors in ascending order according to their age.
+
+	db.Actor.find({},{ _id: 0,First_nm: 1,last_nm:1,age:1}).sort({age:1})
+
+8. Find movies that are comedies or dramas and are released after 2013.
+
+     db.Film.find( { $and : [{$or : [ {"Genre" : "Action"},{"Genre" : "Romantic"}]},{"relYear":{$gte: 2009}}]},{ _id: 0,Title: 1,relYear:1} )	
+
+9. Show the latest 2 films acted by an actor “______”.
+     
+db.Film.find({$and: [{"Actors":{"first_nm":"Shahruk","last_nm":"Khan"}}]},{ _id: 0,Title: 1,relYear:1}).sort({relYear:-1}).limit(2)
+
+
+10. List the titles of films acted by actors “___________” and “________”.
+
+db.Film.find({$and: [{"Actors":{"first_nm":"Shahruk","last_nm":"Khan"}},{"Actors":{"first_nm":"Madhuri","last_nm":"dixit"}}]},{ _id: 0,Title: 1})
+
+
+
+ 
+
+
+	 
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

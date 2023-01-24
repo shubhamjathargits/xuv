@@ -1,0 +1,218 @@
+Song Author:
+
+CREATE(:Song_Author{Name:'Arijit Singh',followers:'100M'})
+CREATE(:Song_Author{Name:'Darshan Raval',followers:'60M'})
+CREATE(:Song_Author{Name:'Harry Sandhu',followers:'122M'})
+CREATE(:Song_Author{Name:'Shirley',followers:'89M'})
+CREATE(:Song_Author{Name:'Shreya Ghoshal',followers:'155M'})
+
+Song Name:
+
+CREATE(:Song{Name:'Jaan Ban Gaye', likes:'20M'})
+CREATE(:Song{Name:'srivalli', likes:'15M'})
+CREATE(:Song{Name:'Sorry Sorry', likes:'17M'})
+CREATE(:Song{Name:'Naina',likes:'80M'})
+CREATE(:Song{Name:'Tere Naam', likes:'3M'})
+CREATE(:Song{Name:'Girlfriend Nastana', likes:'5M'})
+CREATE(:Song{Name:'Sakhiyaan',likes:'6M'})
+
+Artist:
+CREATE(:Artist:Song_Author{Name:'HT', followers:'70M'})
+CREATE(:Artist:Song_Author{Name:'TH',  followers:'22M'})
+CREATE(:Artist:Song_Author{Name:'Tony Kakkar',  followers:'6M'})
+CREATE(:Artist:Song_Author{Name:'Neha Kakkar',  followers:'3M'})
+CREATE(:Artist:Somg_Author{Name:'Himesh',followers:'5M'})
+
+Recording Studio:
+
+CREATE(:Recording_Studio{Name:'Coke Studio'})
+CREATE(:Recording_Studio:Recoding_studio{Name:'Zee Studio'})
+
+Recording_Company:
+
+CREATE(:Recording_company{Name:'Sony ET'})
+CREATE(:Recording_company:Recoding_studio{Name:'Zee ET'})
+
+Relationships
+1)WRITTEN_BY:
+
+Match (sa:Song_Author),(s:Song)
+where sa.Name='Darshan Raval' and s.Name='Jaan Ban Gaye'
+CREATE (s)-[:WRITTEN_BY]->(sa)
+return sa,s
+
+
+Match (sa:Song_Author),(s:Song)
+where sa.Name='Darshan Raval' and s.Name='Girlfriend Nastana'
+CREATE (s)-[:WRITTEN_BY]->(sa)
+return sa,s
+
+
+Match (sa:Song_Author),(s:Song)
+where sa.Name='Harry Sandhu' and s.Name='srivalli'
+CREATE (s)-[:WRITTEN_BY]->(sa)
+return sa,s
+
+Match (sa:Song_Author),(s:Song)
+where sa.Name='Arijit Singh' and s.Name='Naina'
+CREATE (s)-[:WRITTEN_BY]->(sa)
+return sa,s
+
+
+Match (sa:Song_Author),(s:Song)
+where sa.Name='Shirley' and s.Name='Sorry Sorry'
+CREATE (s)-[:WRITTEN_BY]->(sa)
+return sa,s
+
+Match (sa:Song_Author),(s:Song)
+Where sa.Name='Shreya Ghoshal' and s.Name='Sakhiyaan'
+CREATE (s)-[:WRITTEN_BY]->(sa)
+return sa,s
+
+2)Performs:
+
+Match (a:Artist),(s:Song)
+where a.Name='HT' and s.Name='Sakhiyaan'
+CREATE (a)-[:PERFORMS]->(s)
+return a,s
+
+Match (a:Artist),(s:Song)
+where a.Name='TH' and s.Name='Girlfriend Nastana'
+CREATE (a)-[:PERFORMS]->(s)
+return a,s
+
+Match (a:Artist),(s:Song)
+where a.Name='Himesh' and s.Name='Tere Naam'
+CREATE (a)-[:PERFORMS]->(s)
+return a,s
+
+Match (a:Artist),(s:Song)
+where a.Name='Tony Kakkar' and s.Name='Naina'
+CREATE (a)-[:PERFORMS]->(s)
+return a,s
+
+Match (a:Artist),(s:Song)
+where a.Name='Neha Kakkar' and s.Name='Sorry Sorry'
+CREATE (a)-[:PERFORMS]->(s)
+return a,s
+
+3)Recorded_In:
+
+Match (r:Recording_Studio),(s:Song)
+where r.Name='Coke Studio' and s.Name='Tere Naam'
+CREATE (s)-[:RECORDED_IN]->(r)
+return s,r
+
+Match (r:Recording_Studio),(s:Song)
+where r.Name='Zee Studio' and s.Name='srivalli'
+CREATE (s)-[:RECORDED_IN]->(r)
+return s,r
+
+Match (r:Recording_Studio),(s:Song)
+where r.Name='Coke Studio' and s.Name='Naina'
+CREATE (s)-[:RECORDED_IN]->(r)
+return s,r
+
+Match (r:Recording_Studio),(s:Song)
+where r.Name='Zee Studio' and s.Name='Girlfriend Nastana'
+CREATE (s)-[:RECORDED_IN]->(r)
+return s,r
+
+Match (r:Recording_Studio),(s:Song)
+where r.Name='Coke Studio' and s.Name='Sorry Sorry'
+CREATE (s)-[:RECORDED_IN]->(r)
+return s,r
+
+4)Manage_By:
+
+Match (r:Recording_Studio),(rc:Recording_company)
+where r.Name='Coke Studio' and rc.Name='Sony ET'
+CREATE (r)-[:MANAGED_BY]->(rc)
+return r,rc
+
+
+Match (r:Recording_Studio),(rc:Recording_company)
+where r.Name='Zee Studio' and rc.Name='Zee ET'
+CREATE (r)-[:MANAGED_BY]->(rc)
+return r,rc
+
+5)Finances:
+
+Match (rc:Recording_company),(s:Song)
+where rc.Name='Zee ET' and s.Name='Naina'
+CREATE (rc)-[:FINANCES]->(s)
+return rc,s
+
+
+Match (rc:Recording_company),(s:Song)
+where rc.Name='Sony ET' and s.Name='Girlfriend Nastana'
+CREATE (rc)-[:FINANCES]->(s)
+return rc,s
+
+
+Match (rc:Recording_company),(s:Song)
+where rc.Name='Zee ET' and s.Name='Sorry Sorry'
+CREATE (rc)-[:FINANCES]->(s)
+return rc,s
+
+
+Match (rc:Recording_company),(s:Song)
+where rc.Name='Sony ET' and s.Name='Sakhiyaan'
+CREATE (rc)-[:FINANCES]->(s)
+return rc,s
+
+
+Match (rc:Recording_company),(s:Song)
+where rc.Name='Zee ET' and s.Name='Tere Naam'
+CREATE (rc)-[:FINANCES]->(s)
+return rc,s
+
+Queries.
+
+a) List the names of songs written by “:…..”
+
+Match (sa:Song_Author),(s:Song)
+where sa.Name='Darshan Raval' and 
+ (s)-[:WRITTEN_BY]->(sa)
+return s.Name
+
+
+b) List the names of record companies who have financed for the song “….”
+
+Match (rc:Recording_company),(s:Song)
+where s.Name='Girlfriend Nastana' and (rc)-[:FINANCES]->(s)
+return rc.Name
+
+c) List the names of artist performing the song “…..”
+
+Match (a:Artist),(s:Song)
+where s.Name='Sakhiyaan' and (a)-[:PERFORMS]->(s)
+return a.Name
+
+d) Name the songs recorded by the studio “ …….”
+
+Match (r:Recording_Studio),(s:Song)
+where r.Name='Zee Studio' and (s)-[:RECORDED_IN]->(r)
+return s.Name
+
+a) List the names of artists who have sung only songs written by “………”
+
+Match (a:Artist)-[:PERFORMS]->(s:Song),(s:Song)-[:WRITTEN_BY]->(sa:Song_Author)
+where sa.Name='Darshan Raval'
+return a.Name
+
+b) List the names of artists who have sung the maximum number of songs recorded by “……”
+studio
+
+Match (a:Artist)-[:PERFORMS]->(s:Song),(s:Song)-[:RECORDED_IN]->(r:Recording_Studio)
+where r.Name='Coke Studio'
+return a.Name
+
+c) List the names of songs financed by “…..”, and sung by “……..”
+
+Match (a:Artist)-[:PERFORMS]->(s:Song),(rc:Recording_company)-[:FINANCES]->(s:Song)
+where rc.Name='Zee ET' and a.Name='Tony Kakkar'
+return s.Name,rc.Name,a.Name
+
+
+

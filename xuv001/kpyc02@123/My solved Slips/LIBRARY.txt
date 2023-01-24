@@ -1,0 +1,215 @@
+LIBRARY DATABASE:
+
+
+CREATE(:Publisher{Name:'PK',city:'Pune'})
+CREATE (:Author{name:'John Le Carre', born:'19-10-1932'})
+CREATE (:Author{name:'Graham Greene',born:'02-10-1904',died:'02-04-1991'})
+
+CREATE BOOKS
+
+CREATE (:Book{title:"Tinker Tailor Soldier Spy",tag:['English', 'Japanies'], status:'not Issued', condition:'New', published:1974, cost:350, type:'Novel'})
+CREATE (:Book{title:'Our Man in Havana',tag:['Ameriaca','English','Korian'], status:'Issued',condition:'new',published:1958, cost:250, type:'suspense thriller'})
+CREATE (:Book{title:"Bayari",tag:['English', 'Marathi'], status:'not Issued', condition:'New', published:1999, cost:333, type:'Novel'})
+CREATE (:Book{title:"Shamachi Aai",tag:['English', 'Marathi'], status:' Issued', condition:'oid', published:2000, cost:444, type:'Novel'})
+
+
+
+
+CREATE READERS:
+
+CREATE (a:Reader:Author{name:'Lan'})
+return a
+CREATE (:Reader{name:'Alan'})
+CREATE(:Reader{name:'Clay'})
+CREATE(:Reader{name:'Hanahha Baker'})
+CREATE (:Reader{name:'Harshal'})
+CREATE (:Reader{name:'Ganesh'})
+
+
+MATCH RELATIONSHIP:
+1) PUBLISHED BY:
+
+Match(a:Author),(b:Book)
+Where a.name='John Le Carre' and b.title='Tinker Tailor Soldier Spy'
+CREATE (a)-[:Published_By]->(b)
+return a,b
+
+Match(a:Author),(b:Book)
+Where a.name='Graham Greene' and b.title='Our Man in Havana'
+CREATE (a)-[:Published_By]->(b)
+return a,b
+
+2)TRANSLATED BY:
+
+Match(r:Reader),(b:Book)
+where b.title='Bayari' and r.name='Clay'
+CREATE (b)-[:Translated_By]->(r)
+return b,r
+
+Match(r:Reader),(b:Book)
+where b.title='Shamachi Aai' and r.name='Harshal'
+CREATE (b)-[:Translated_By]->(r)
+return b,r
+
+3)WROTE BY:
+
+Match(b:Book),(a:Author)
+Where b.title="Bayari" and a.name="Graham Greene"
+create (a)-[:WROTE]->(b)
+return a,b
+
+Match(b:Book),(a:Author)
+Where b.title="Our Man in Havana" and a.name="John Le Carre"
+create (a)-[:WROTE]->(b)
+return a,b
+
+4)VOTES BY:
+
+Match (r:Reader),(b:Book)
+Where r.name='Alan' and b.title='Bayari'
+CREATE (r)-[:Votes{stars:4}]->(b)
+return r,b
+
+Match (r:Reader),(b:Book)
+Where r.name='Hanahha Baker' and b.title='Bayari'
+CREATE (r)-[:Votes{stars:4}]->(b)
+return r,b
+
+5)ISSUED BY:
+
+Match (b:Book),(r:Reader)
+Where b.title="Our Man in Havana" and r.name="Alan"
+CREATE (b)-[:Issued_By]->(r)
+return b,r
+
+Match (b:Book),(r:Reader)
+Where b.title="Our Man in Havana" and r.name="Lan"
+CREATE (b)-[:Issued_By]->(r)
+return b,r
+
+6)REVIEWED BY:
+Match(b:Book),(p:Publisher)
+Where b.title="Tinker Tailor Soldier Spy" and p.Name="PK"
+create (b)-[:Reviewed_By]->(p)
+return b,p
+
+Match(b:Book),(p:Publisher)
+Where b.title="Our Man in Havana" and p.Name="PK"
+create (b)-[:Reviewed_By]->(p)
+return b,p
+
+Match(b:Book),(r:Reader)
+Where b.title="Shamachi Aai" and r.name="Alan"
+create (b)-[:Reviewed_By]->(r)
+return b,r
+
+Match(b:Book),(r:Reader)
+Where b.title="Shamachi Aai" and r.name="Lan"
+create (b)-[:Reviewed_By]->(r)
+return b,r
+
+7)Recommended 
+
+Match(r:Reader),(b:Book)
+Where r.name="Alan" and b.title="Tinker Tailor Soldier Spy"
+CREATE (r)-[:Recommended{date:'05-07-2011'}]->(b)
+return r,b
+
+Match(r:Reader),(b:Book)
+Where r.name="Lan" and b.title="Tinker Tailor Soldier Spy"
+CREATE (r)-[:Recommended{date:'05-07-2011'}]->(b)
+return r,b
+
+READ:
+Match (b:Book),(r:Reader)where b.title="Tinker Tailor Soldier Spy" and r.name="Harshal" CREATE(b)-[:Read_BY]->(r)
+return b,r
+
+Match (b:Book),(r:Reader)where b.title="Tinker Tailor Soldier Spy" and r.name="Ganesh" CREATE(b)-[:Read_BY]->(r)
+return b,r
+
+
+
+QUERIES:
+
+A) List all people, who have issued a book “Our Man in Havana”.
+
+Match (b:Book)-[r:Issued_By]->(rd:Reader)
+Where b.title='Our Man in Havana'
+RETURN b,r,rd
+
+B)Count the number of people who have read “Tinker Tailor Soldier Spy”
+
+Match (r:Reader)-[rr:Recommended]->(b:Book)
+Where b.title="Tinker Tailor Soldier Spy"
+Return Count(r)
+
+Match (r:Reader)-[rr:Issued_By]->(b:Book)
+Where b.title="Tinker Tailor Soldier Spy"
+Return Count(r)
+
+C)Add a property “Number of books issued" for "Mr. Clay" and set its value as the count (Not Working)
+Match (r:Reader{name:'Alan'})
+SET r.No_of_Issued=2
+Return r
+
+D) List the names of publishers from pune city.
+ 
+match(p:Publisher{city:'Pune'})
+return p.Name
+
+COMPLEX QUERIES:
+A) List all readers who have recommended either book “…” or “……..” or “……..”
+MATCH (r:Reader)-[rr:Recommended]->(b:Book)
+Where b.title="Tinker Tailor Soldier Spy" or b.title="Our Man in Havana"
+Return r
+
+B) List the readers who haven’t recommended any book 
+
+Match (r:Reader) Where not (r:Reader)-[:Recommended]->(:Book) Return r
+
+
+C) List the authors who have written a book that has been read / issued by maximum number of readers.
+
+Match (b:Book)-[rr:Issued_By]->(r:Reader)
+Return b.title,Count(b)
+
+Match (b:Book)-[rr:Issued_By]->(r:Reader) // (Not working)
+Where max(count(b))
+Return b.title, Count(b)
+
+D) List the names of books recommended by “……….” And read by at least one reader
+
+Match(b:Book)-[:Recommended]->(p:reader{name: "Harshal"}) 
+Match (b:Book)-[:Read_BY]->(r:reader)  with count(r) as cnt,b where cnt>0 return b  
+MATCH (r:Reader)-[rr:Recommended]->(b:Book)  
+
+
+
+
+
+
+E) List the names of books recommended by “………” and read by maximum number of readers. 
+
+Match(b:Book)-[:RECOMMENDED_BY]->(p:persons{name: "Sahil"}) 
+ Match (b:Book)–[i:Read_BY]->(r:reader) with count(r) as cnt,b,p With max(cnt) as max 
+Match(b:Book)-[:RECOMMENDED_BY]->(p:persons{name:"Sahil"}) 
+ Match (b:Book)–[:Read_BY]->(r:reader) with count(r) as cnt,b,p,max where max=cnt return b.title
+
+
+
+
+F) List the names of publishers who haven’t published any books written by authors from Pune and Mumbai.
+
+Match(a:author)-[:WROTE]->(b:Book) Match (b:Book)-[:PUBLISHEd_BY]->(p:publisher) where a.city<>"Pune" <>"Mumbai" return p.name
+
+
+
+
+
+G)   List the names of voracious readers in our library 
+   [Voracious means the reader who haven't issued any book]
+
+Match (a:Reader)
+Where Not (:Book)-[:Issued_By]->(a:Reader)
+Return a.name
+

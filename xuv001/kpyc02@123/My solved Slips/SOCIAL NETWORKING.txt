@@ -1,0 +1,267 @@
+Person:
+
+CREATE(:Person{name:"Harshal",Bdate:date("2000-17-11")})
+CREATE(:Person{name:"Prathmesh",Bdate:date("2001-05-10")})
+CREATE(:Person{name:"Pankaj",Bdate:date("2000-12-24")})
+CREATE(:Person{name:"Ganesh",Bdate:date("2001-10-12")})
+CREATE(:Person{name:"Vivek",Bdate:date("2002-05-15")})
+CREATE(:Person{name:"Chetan",Bdate:date("2001-10-02")})
+CREATE(:Person{name:"Sachin",Bdate:date("1999-02-02")})
+CREATE(:Person{name:"Vishal",Bdate:date("2001-02-01")})
+CREATE(:Person{name:"Sagar",Bdate:date("2000-01-15")})
+CREATE(:Person{name:"Sanket",Bdate:date("2000-02-17")})
+
+Affilations:
+CREATE(:Affilations{name:"Pune University"})
+CREATE(:Affilations{name:"Mumbai University"})
+CREATE(:Affilations{name:"Kolhapur University"})
+CREATE(:Affilations{name:"Nasik University"})
+CREATE(:Affilations{name:"Sangamner University"})
+CREATE(:Affilations{name:"Kolhar University"})
+
+Groups:
+
+CREATE(:Group{name:"MCS Student"})
+CREATE(:Group{name:"BCS Student"})
+CREATE(:Group{name:"Boys Study Material"})
+CREATE(:Group{name:"MCA Student"})
+CREATE(:Group{name:"Study For You"})
+
+Story:
+
+CREATE(:Story{About:"Moody Monday",Date:"20-12-2021"})
+CREATE(:Story{About:"Emotional",Date:"24-11-2021"})
+CREATE(:Story{About:"Boom Friday",Date:"17-05-2021"})
+CREATE(:Story{About:"Goa Vibes",Date:"01-02-2022"})
+
+Timeline:
+
+CREATE(:Timeline{name:"Harshal Timeline"})
+CREATE(:Timeline{name:"Pankaj Timeline"})
+CREATE(:Timeline{name:"Vishal Timeline"})
+CREATE(:Timeline{name:"Vivek Timeline"})
+CREATE(:Timeline{name:"Prathmesh Timeline"})
+
+Message:
+
+CREATE(:Message{sender:"Harshal",content:"Science for life",date:date("2020-12-12")})
+CREATE(:Message{sender:"Vivek",content:"Bright Future",date:date("2020-11-11")})
+CREATE(:Message{sender:"Vishal",content:"Made for country",date:date("2020-1-12")})
+CREATE(:Message{sender:"Prathmesh",content:"Liv and let live",date:date("2020-10-14")})
+CREATE(:Message{sender:"Ganesh",content:"Women Liberty",date:date("2020-05-15")})
+CREATE(:Message{sender:"Sanket",content:"Science for life",date:date("2020-05-28")})
+
+
+Friend of
+
+Match(p1:Person),(p2:Person)
+Where p1.name='Harshal'and p2.name='Vivek'
+CREATE (p1)-[:Friend_of]->(p2)
+return p1,p2
+
+Match(p1:Person),(p2:Person)
+Where p1.name='Prathmesh' and p2.name='Ganesh'
+CREATE (p1)-[:Friend_of]->(p2)
+return p1,p2
+
+
+Match(p1:Person),(p2:Person)
+Where p1.name='Ganesh' and p2.name='Vishal'
+CREATE(p1)-[:Friend_of]->(p2)
+return p1,p2
+
+Match(p1:Person),(p2:Person)
+Where p1.name='Vishal' and p2.name='Vivek'
+CREATE(p1)-[:Friend_of]->(p2)
+return p1,p2
+
+Match(p1:Person),(p2:Person)
+Where p1.name='Ganesh' and p2.name='Harshal'
+CREATE(p1)-[:Friend_of]->(p2)
+return p1,p2
+
+Match(p1:Person),(p2:Person)
+Where p1.name='Prathmesh' and p2.name='Vivek'
+CREATE(p1)-[:Friend_of]->(p2)
+return p1,p2
+
+Match(p1:Person),(p2:Person)
+Where p1.name='Sagar'and p2.name='Sanket'
+CREATE (p1)-[:Friend_of]->(p2)
+return p1,p2
+
+Affilated:
+
+Match(p:Person),(a:Affilations)
+Where p.name='Harshal' and a.name='Pune University'
+CREATE(p)-[:Affiliated_to]->(a)
+return p,a
+
+Match(p:Person),(a:Affilations)
+Where p.name='Ganesh' and a.name='Mumbai University'
+CREATE(p)-[:Affiliated_to]->(a)
+return p,a
+
+Match(p:Person),(a:Affilations)
+Where p.name='Prathmesh' and a.name='Sangamner University'
+CREATE(p)-[:Affiliated_to]->(a)
+return p,a
+
+Match(p:Person),(a:Affilations)
+Where p.name='Vivek' and a.name='Kolhapur University'
+CREATE(p)-[:Affiliated_to]->(a)
+return p,a
+
+Match(p:Person),(a:Affilations)
+Where p.name='Pankaj' and a.name='Kolhar University'
+CREATE(p)-[:Affiliated_to]->(a)
+return p,a
+
+Belongs_to
+
+Match(p:Person),(g:Group)
+Where p.name='Harshal' and g.name='MCS Student'
+CREATE(p)-[:Belongs_to]->(g)
+return p,g
+
+Match(p:Person),(g:Group)
+Where p.name='Pankaj' and g.name='BCS Student'
+CREATE(p)-[:Belongs_to]->(g)
+return p,g
+
+Match(p:Person),(g:Group)
+Where p.name='Vivek' and g.name='MCA Student'
+CREATE(p)-[:Belongs_to]->(g)
+return p,g
+
+Match(p:Person),(g:Group)
+Where p.name='Ganesh' and g.name='Boys Study Material'
+CREATE(p)-[:Belongs_to]->(g)
+return p,g
+
+Match(p:Person),(g:Group)
+Where p.name='Harshal' and g.name='Study For You'
+CREATE(p)-[:Belongs_to]->(g)
+return p,g
+
+
+Create and Reffers
+
+Match(p1:Person),(p2:Person),(s:Story)
+Where p1.name='Harshal'and p2.name='Vivek'and s.About='Moody Monday'
+CREATE (p1)-[:Creates]->(s)-[:Reffers]->(p2)
+return p1,s,p2
+
+Match(p1:Person),(p2:Person),(s:Story)
+Where p1.name='Pankaj'and p2.name='Prathmesh'and s.About='Boom Friday'
+CREATE (p1)-[:Creates]->(s)-[:Reffers]->(p2)
+return p1,s,p2
+
+Match(p1:Person),(p2:Person),(s:Story)
+Where p1.name='Vishal'and p2.name='Harshal'and s.About='Emotional'
+CREATE (p1)-[:Creates]->(s)-[:Reffers]->(p2)
+return p1,s,p2
+
+Match(p1:Person),(p2:Person),(s:Story)
+Where p1.name='Prathmesh'and p2.name='Ganesh'and s.About='Goa Vibes'
+CREATE (p1)-[:Creates]->(s)-[:Reffers]->(p2)
+return p1,s,p2
+
+
+creates and reference_for
+
+Match(p:Person),(t:Timeline),(s:Story)
+Where p.name='Harshal'and t.name='Harshal Timeline'and s.About='Goa Vibes'
+CREATE (p)-[:Create]->(t)-[:Refference_for]->(s)
+return p,t,s
+
+Match(p:Person),(t:Timeline),(s:Story)
+Where p.name='Vishal'and t.name='Vishal Timeline'and s.About='Moody Monday'
+CREATE (p)-[:Create]->(t)-[:Refference_for]->(s)
+return p,t,s
+
+Match(p:Person),(t:Timeline),(s:Story)
+Where p.name='Vivek'and t.name='Vivek Timeline'and s.About='Emotional'
+CREATE (p)-[:Create]->(t)-[:Refference_for]->(s)
+return p,t,s
+
+Match(p:Person),(t:Timeline),(s:Story)
+Where p.name='Sanket'and t.name='Harshal Timeline'and s.About='Emotional'
+CREATE (p)-[:Create]->(t)-[:Refference_for]->(s)
+return p,t,s
+
+Contains
+
+Match(t:Timeline),(m:Message)
+Where t.name='Harshal Timeline'and m.content='Science for life'
+CREATE (t)-[:Contains]->(m)
+return t,m
+
+
+Match(t:Timeline),(m:Message)
+Where t.name='Vivek Timeline'and m.content='Bright Future'
+CREATE (t)-[:Contains]->(m)
+return t,m
+
+a)Find all friends of “Harshal”, along with the year, since when Harshal knows them. 
+ans:
+Match (j:Person{name:"Harshal"})-[f:Friend_of]-(p:Person) return p.name,f.since
+
+b)List out the affiliations of Harshal. 
+ans:
+Match (j:Person{name:"Harshal"})-[:Affiliated_to]-(a:Affilations) return a.name
+
+
+c)Find all friends of Harshal, who are born in the same year as Sagar 
+ans:
+
+Match (j:Person{name:"Sagar"})-[f:Friend_of]-(p:Person) where j.Bdate.year = p.Bdate.year
+return p
+
+
+d)List out the messages posted by John in his timeline, during the year 2015. 
+ans:
+Match (j:Person{name:"Sanket"})-[:Create]->(:Timeline)-[:Contains]->(m:Message) where m.date.year=2020
+return m
+
+
+
+
+
+a)List out the people, who have created maximum timeline messages. 
+
+match (p1:Person)-[:Create]->(t:Timeline)-[:Contains]->(m1:Message) with count(m1) as Mcnt,p1 with max(Mcnt) as Max
+match (p2:Person)-[:Create]->(t1:Timeline)-[:Contains]->(m2:Message) with count(m2) as Mcnt,p2,Max where Mcnt=Max
+return p2.name
+
+b)List all friends of Vivek’s friend, Harshal
+
+match (p:Person{name:"Harshal"})-[:Friend_of]-(p2:Person)-[:Friend_of]-(p1:Person{name:"Vivek"})- [:Friend_of]-(p)
+return p2.name
+
+c)List the people with maximum friends 
+
+Match (p1:Person)-[f:Friend_of]-(p2:Person) with count(p2) as Pcnt,p1 with max(Pcnt) as Pmax
+Match (p3:Person)-[f:Friend_of]-(p4:Person) with count(p4) as Pcnt,p3,Pmax where Pcnt=Pmax
+return p3.name
+
+d)List the people who are part of more than 3 groups 
+
+Match (p:Person)-[:Belongs_to]->(g:Group) with count(g) as Gcnt,p where Gcnt>=2
+return p.name
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

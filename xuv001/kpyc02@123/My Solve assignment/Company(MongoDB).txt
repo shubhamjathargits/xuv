@@ -1,0 +1,175 @@
+Assignment:2
+
+db.Employee.insert({
+"eid":"1",
+"fname":"Harshal",
+"lname":"Thombare",
+"email":"harshu@gmail.com",
+"phone no":"9881213281",
+"address":[{"House No":"285","street":"AS road","city":"Mumbai","state":"Maharshtra","country":"India","pincode":"422605"}],
+"salary":39000.45,
+Designation:"Developer",
+Experiance:0,
+DateOfJoining:Date("02-06-2022"),
+BirthDate:Date("12-10-2001")})
+
+db.Employee.insert({
+"eid":"2",
+"fname":"Spandan",
+"lname":"Thombare",
+"email":"spandan@gmail.com",
+"phone no":"7385104281",
+"address":[{"House No":"286","street":"MG road","city":"Pune","state":"Mharashtra","country":"India","pincode":"422606"}],
+"salary":40000.46,
+Designation:"Developer",
+Experiance:1,
+DateOfJoining:Date("03-07-2022"),
+BirthDate:Date("23-10-2001")})
+
+db.Employee.insert({
+"eid":"3",
+"fname":"Prafull",
+"lname":"Thombare",
+"email":"prafull@gmail.com",
+"phone no":"7385459581",
+"address":[{"House No":"287","street":"CG road","city":"Nasik","state":"Mharashtra","country":"India","pincode":"422607"}],
+"salary":20000.46,
+Designation:"Superviser",
+Experiance:2,
+DateOfJoining:Date("04-11-2022"),
+BirthDate:Date("31-03-1997")})
+
+
+
+db.Employee.insert({
+"eid":"5",
+"fname":"Aditi",
+"lname":"Thombare",
+"email":"ad@gmail.com",
+"phone no":"9011981398",
+"address":[{"House No":"300","street":"HT road","city":"Chakan","state":"Mharashtra","country":"India","pincode":"422505"}],
+"salary":50000.46,
+Designation:"Tester",
+Experiance:3,
+DateOfJoining:Date("12-05-2020"),
+BirthDate:Date("20-04-1999")})
+
+
+2. Insert multiple documents (at least 10) into the ‘Transaction’ collection by passing 
+an array of documents to the db.collection.insert () method.
+
+db.Transaction.insert({
+tid:1,tdate:Date("1-1-2021"),
+name:"Harshal",
+tdetails:{itemId:1,itemname:"Notebook",quantity:5,Price:50},
+payment:{ptype:"cash",pamount:225.76,status:"payment successful"},
+remark:"done"})
+
+db.Transaction.insert({
+tid:2,tdate:Date("11-1-2021"),
+name:"Spandan",
+tdetails:{itemId:2,itemname:"Burger",quantity:2,Price:100},
+payment:{ptype:"cash",pamount:180.76,status:"payment successful"},
+remark:"done"})
+
+db.Transaction.insert({
+tid:3,tdate:Date("23-10-2021"),
+name:"Ganesh",
+tdetails:{itemId:3,itemname:"Coffie",quantity:2,Price:60},
+payment:{ptype:"online",pamount:115.0,status:"payment successful"},
+remark:"done"})
+
+db.Transaction.insert({
+tid:4,tdate:Date("25-10-2021"),
+name:"Sagar",
+tdetails:{itemId:4,itemname:"Juice",quantity:4,Price:25},
+payment:{ptype:"online",pamount:100,status:"payment successful"},
+remark:"done"})
+
+db.Transaction.insert({
+tid:5,tdate:Date("20-08-2021"),
+name:"Prafull",
+tdetails:{itemId:5,itemname:"Pizza",quantity:2,Price:120},
+payment:{ptype:"debit",pamount:240,status:"payment successful"},
+remark:"done"})
+
+db.Transaction.insert({
+tid:6,tdate:Date("27-07-2021"),
+name:"Vaibhav",
+tdetails:{itemId:6,itemname:"Vadapav",quantity:2,Price:15},
+payment:{ptype:"credit",pamount:30,status:"payment successful"},
+remark:"done"})
+
+3. Display all the documents of both the collections in a formatted manner.
+db.Employee.find().pretty()
+db.Transaction.find().pretty()
+
+4. Update salary of all employees by giving an increment of Rs. 4000.
+db.Employee.updateMany({},{$inc:{salary:4000}})
+
+5. Update the remark for transaction id 201.
+db.Transaction.updateOne({"tid":2},{$set:{remark:"pending"}});
+
+6. Update designation of an employee named “_ ” from supervisor to 
+manager.
+ db.Employee.updateOne({"fname":"Harshal"},{$set:{Designation:"Manager"}})
+
+7. Update designation of an employee having Employee Id as 4
+db.Employee.updateOne({"eid":"4"},{$set:{Designation:"Tester"}})
+
+8. Change the address of an employee having Employee Id as .
+db.Employee.updateOne({"eid":"5"},{$set:{"address":[{"House No":"2","street":"Main road","city":"Pune","state":"Maharshtra","country":"India","pincode":"652289"}]}})
+
+9. Delete transaction made by “ ” employee on the given date. 
+db.Transaction.remove({fname:"Harshal",lname:"Thombare"})
+
+10.Delete all the employees whose first name starts with 'V'
+db.Employee.remove({fname:/^V/})
+
+Assignment:4
+
+1. Find employees having designation as either ‘manager’ or ‘supervisor’.
+
+db.Employee.find({$or:[{Designation:"Manager"},{Designation:"Superviser"}]}).pretty()
+
+2. Find an employee whose name ends with " " and print the 
+output in json format.
+
+ db.Employee.find({fname:{$regex:/a$/}}).pretty()
+ db.Employee.find({"fname":{$regex:"l$"}}).pretty()
+ db.Employee.find({"fname":/l$/}).pretty()
+
+
+3. Display the name of an employee whose salary is greater than 
+using a MongoDB cursor.
+db.Employee.find({salary:{"$gt":3500}}).pretty()
+
+4. Sort the employees in the descending order of their designation.
+
+db.Employee.find().sort({Designation:-1}).pretty()
+
+5. Count the total number of employees in a collection.
+
+ db.Employee.count()
+
+6. Calculate the sum of total amount paid for all the transaction documents.
+
+ db.Transaction.aggregate([{ $unwind: "$payment" },{$group: {_id: null,TotalAmount: { $sum: "$payment.pamount" }}}])
+
+
+7. Calculate the sum of total amount paid for each payment type.
+
+
+8. Find the transaction id of the latest transaction.
+
+db.Transaction.find().sort({tdate:-1}).limit(1).pretty()
+
+9. Find designation of employees who have made transaction of amount greater than 
+Rs. 500.
+ db.Employee.find({"salary":{$gt:500}})
+
+10. Find the total quantity of a particular item sold using Map Reduce.
+
+
+
+
